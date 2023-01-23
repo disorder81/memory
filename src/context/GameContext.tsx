@@ -50,16 +50,6 @@ export const initialState: GameState = {
 };
 
 const getCards = (imgs: string[]): CardModel[] => {
-  // const selection = shuffle(imgs).slice(0, settings.numImages);
-  // const duplicated = [...selection, ...selection].map((img, index) => ({
-  //   id: (index + 1).toString(),
-  //   value: img,
-  //   flipped: false,
-  //   matched: false
-  // }));
-
-  // return duplicated;
-
   const selection = shuffle(imgs).slice(0, settings.numImages);
   const duplicated = shuffle([...selection, ...selection]);
   return duplicated.map((img, index) => ({
@@ -83,15 +73,6 @@ const countFlippedCards = (cards: CardModel[]) =>
 
 const getScore = (cards: CardModel[]) =>
   (cards.filter((card) => card.matched).length / 2) * 100;
-
-// interface GetImagesAction extends Action {
-//   type: ActionKind.GET_IMAGES;
-//   payload: CardModel[];
-// }
-
-// function isGetImagesAction(action: Action): action is GetImagesAction {
-//   return action.type === ActionKind.GET_IMAGES;
-// }
 
 const gameReducer = (state: GameState, action: Action): GameState => {
   const { type, payload } = action;
