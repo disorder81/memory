@@ -1,6 +1,6 @@
 # Github memory
 
-React-based memory gaming using avatars from Github top contributors
+React-based memory game using avatars from Github top contributors
 
 Install:
 ```
