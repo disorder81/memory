@@ -5,10 +5,6 @@ React-based memory gaming using avatars from Github top contributors
 Install:
 ```
 npm i
-```
-
-Install husky
-```
 npm run prepare
 ```
 
