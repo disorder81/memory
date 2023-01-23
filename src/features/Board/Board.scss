@@ -1,0 +1,51 @@
+$card-size: 100px;
+$card-size-large: 150px;
+
+$columns: 3;
+$columns-desktop: 4;
+
+@mixin card-size($size) {
+  height: $size;
+  width: $size;
+}
+
+@mixin phone-large {
+  @media (min-width: 520px) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (min-width: 720px) {
+    @content;
+  }
+}
+
+.board {
+  display: grid;
+  grid-gap: 1em;
+  padding: 0 2rem;
+  grid-template-columns: repeat($columns, 1fr);
+
+  @include phone-large() {
+    grid-template-columns: repeat($columns-desktop, 1fr);
+  }
+}
+
+.flippable {
+  @include card-size($card-size);
+  @include tablet {
+    @include card-size($card-size-large);
+  }
+  perspective: 1000px;
+}
+
+.game-info {
+  padding: 2rem;
+  font-size: 1.5rem;
+  @include tablet {
+    font-size: 2rem;
+  }
+  display: flex;
+  justify-content: space-between;
+}

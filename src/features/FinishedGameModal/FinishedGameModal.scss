@@ -1,0 +1,12 @@
+.finished-game-modal {
+  .modal__content {
+    max-width: 500px;
+    background-color: #3B4369;
+    :not(:last-child) {
+      margin: 0 0 2rem 0;
+    }
+    .score {
+      font-size: 2rem;
+    }
+  }
+}
