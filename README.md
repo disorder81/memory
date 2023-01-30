@@ -16,7 +16,7 @@ npm start
 Test
 ```
 npm test
-npm test:coverage
+npm run test:coverage
 ```
 
 
