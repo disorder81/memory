@@ -95,7 +95,10 @@ describe('<Board />', () => {
           expect(card1).toHaveClass('down');
           expect(card2).toHaveClass('down');
 
-          jest.runOnlyPendingTimers();
+          act(() => {
+            jest.runOnlyPendingTimers();
+          });
+
           jest.useRealTimers();
         });
       });
@@ -131,7 +134,9 @@ describe('<Board />', () => {
           });
           const dialog = screen.getByRole('dialog');
           expect(within(dialog).getByText(/game over/i)).toBeInTheDocument();
-          jest.runOnlyPendingTimers();
+          act(() => {
+            jest.runOnlyPendingTimers();
+          });
           jest.useRealTimers();
         });
       });
