@@ -7,7 +7,7 @@ const config: Config = {
   collectCoverage: false,
   collectCoverageFrom: ['src/**/*.{tsx,ts}'],
   coverageDirectory: 'coverage',
-  coveragePathIgnorePatterns: ['index.tsx', 'config.ts', '.test.*'],
+  coveragePathIgnorePatterns: ['index.tsx', 'config.ts', '.test.*', 'model'],
   coverageProvider: 'v8',
   displayName: 'React memory game',
   coverageThreshold: {

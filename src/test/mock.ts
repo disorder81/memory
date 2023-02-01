@@ -8,6 +8,7 @@ export const initialContext: GameContextModel = {
   },
   flipCard: jest.fn(),
   gameOver: jest.fn(),
+  getImages: jest.fn(),
   newGame: jest.fn(),
   reset: jest.fn()
 };

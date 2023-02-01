@@ -1,9 +1,4 @@
-import React, {
-  PropsWithChildren,
-  useEffect,
-  useMemo,
-  useReducer
-} from 'react';
+import React, { PropsWithChildren, useMemo, useReducer } from 'react';
 import { shuffle } from '../utils';
 import settings from '../config/settings';
 import { Action, ActionKind } from '../types/actions';
@@ -35,11 +30,12 @@ export type GameState = {
 };
 
 export type GameContextModel = {
-  state: GameState;
-  newGame: () => void;
   flipCard: (card: CardModel) => void;
-  reset: () => void;
   gameOver: () => void;
+  getImages: (imgs: Array<string>) => void;
+  newGame: () => void;
+  reset: () => void;
+  state: GameState;
 };
 
 export const initialState: GameState = {
@@ -163,46 +159,28 @@ const GameContext = React.createContext<GameContextModel>(
 
 const GameContextProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [state, dispatch] = useReducer(gameReducer, initialState);
-
-  // TODO: move to AppContext
-  useEffect(() => {
-    async function fetchImages() {
-      const response = await fetch(settings.api);
-
-      if (response?.ok) {
-        const json = await response.json();
-
-        const avatars = json.map(
-          (item: { avatar_url: string }) => item.avatar_url
-        );
-
-        dispatch({ type: ActionKind.GET_IMAGES, payload: avatars });
-      } else {
-        console.log('Error loading image'); // TODO
-      }
-    }
-
-    fetchImages();
-  }, []);
-
-  const value = useMemo(
-    () => ({
+  const value = useMemo<GameContextModel>(() => {
+    const result: GameContextModel = {
       state,
       flipCard: (card: CardModel) => {
         dispatch({ type: ActionKind.FLIP_CARD, payload: card });
+      },
+      gameOver: () => {
+        dispatch({ type: ActionKind.GAME_OVER });
+      },
+      getImages: (imgs: Array<string>) => {
+        dispatch({ type: ActionKind.GET_IMAGES, payload: imgs });
       },
       newGame: () => {
         dispatch({ type: ActionKind.INIT });
       },
       reset: () => {
         dispatch({ type: ActionKind.RESET });
-      },
-      gameOver: () => {
-        dispatch({ type: ActionKind.GAME_OVER });
       }
-    }),
-    [state, dispatch]
-  );
+    };
+
+    return result;
+  }, [state, dispatch]);
 
   return <GameContext.Provider value={value}>{children}</GameContext.Provider>;
 };

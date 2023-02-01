@@ -6,6 +6,7 @@ const gameStatus: { [key in GameStatus]?: string } = {
 };
 
 export const messages: { [key in string]: string } = {
+  fetchError: 'There was some error fetching data, please try again',
   newGame: 'New game',
   outOfTime: 'Out of time!',
   ...gameStatus
