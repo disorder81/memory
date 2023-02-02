@@ -1,9 +1,25 @@
 import { useEffect, useReducer } from 'react';
 
-interface State<T> {
+type State<T> = {
   data?: T;
   error?: Error;
 }
+
+type FetchLoading = {
+  type: 'loading'
+}
+
+type FetchActionSucess<T> = {
+  type: 'fetchSuccess',
+  payload: T
+}
+
+type FetchActionError = {
+  type: 'fetchError',
+  payload: Error
+}
+
+type Actions<T> = FetchLoading | FetchActionSucess<T> | FetchActionError;
 
 function useFetch<T = unknown>(url: string, options?: RequestInit): State<T> {
   const initialState: State<T> = {
@@ -11,17 +27,16 @@ function useFetch<T = unknown>(url: string, options?: RequestInit): State<T> {
     error: undefined
   };
 
-  const reducer = (state: State<T>, action: any): State<T> => {
-    const { type, payload } = action;
-    switch (type) {
+  const reducer = (state: State<T>, action: Actions<T>): State<T> => {
+    switch (action.type) {
       case 'loading': {
         return { ...initialState };
       }
       case 'fetchSuccess': {
-        return { ...initialState, data: payload };
+        return { ...initialState, data: action.payload };
       }
       case 'fetchError': {
-        return { ...initialState, error: payload };
+        return { ...initialState, error: action.payload };
       }
       /* istanbul ignore next */
       default: {

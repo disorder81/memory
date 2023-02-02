@@ -1,7 +1,6 @@
 import React, { PropsWithChildren, useMemo, useReducer } from 'react';
 import { shuffle } from '../utils';
 import settings from '../config/settings';
-import { Action, ActionKind } from '../types/actions';
 
 export enum GameStatus {
   NOT_STARTED = 'NOT_STARTED',
@@ -38,6 +37,43 @@ export type GameContextModel = {
   state: GameState;
 };
 
+enum ActionKind {
+  GET_IMAGES = 'GET_IMAGES',
+  INIT = 'INIT',
+  FLIP_CARD = 'FLIP_CARD',
+  RESET = 'RESET',
+  GAME_OVER = 'GAME_OVER'
+}
+
+type FlipCardAction = {
+  type: ActionKind.FLIP_CARD;
+  payload: CardModel;
+};
+
+type GetImagesAction = {
+  type: ActionKind.GET_IMAGES;
+  payload: Array<string>;
+};
+
+type InitAction = {
+  type: ActionKind.INIT;
+};
+
+type ResetAction = {
+  type: ActionKind.RESET;
+};
+
+type GameOverAction = {
+  type: ActionKind.GAME_OVER;
+};
+
+type Actions =
+  | FlipCardAction
+  | GetImagesAction
+  | InitAction
+  | ResetAction
+  | GameOverAction;
+
 export const initialState: GameState = {
   deck: [],
   cards: [],
@@ -70,13 +106,12 @@ const countFlippedCards = (cards: CardModel[]) =>
 const getScore = (cards: CardModel[]) =>
   (cards.filter((card) => card.matched).length / 2) * 100;
 
-const gameReducer = (state: GameState, action: Action): GameState => {
-  const { type, payload } = action;
-  switch (type) {
+const gameReducer = (state: GameState, action: Actions): GameState => {
+  switch (action.type) {
     case ActionKind.GET_IMAGES: {
       return {
         ...state,
-        deck: payload
+        deck: action.payload
       };
     }
     case ActionKind.INIT: {
@@ -89,7 +124,7 @@ const gameReducer = (state: GameState, action: Action): GameState => {
     }
     case ActionKind.FLIP_CARD: {
       const cards = state.cards.map((card) => {
-        if (card.id === payload.id) {
+        if (card.id === action.payload.id) {
           return { ...card, flipped: true };
         }
         return { ...card };
