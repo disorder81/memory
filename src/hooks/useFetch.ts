@@ -62,7 +62,7 @@ function useFetch<T = unknown>(url: string, options?: RequestInit): State<T> {
       }
     }
 
-    void fetchData();
+    fetchData();
   }, [url]);
 
   return state;
