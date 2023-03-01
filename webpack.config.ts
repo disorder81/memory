@@ -1,6 +1,9 @@
 import * as path from 'path';
-import { Configuration } from 'webpack';
+import type { Configuration as DevServerConfiguration } from 'webpack-dev-server';
+import type { Configuration } from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
+
+const devServer: DevServerConfiguration = { hot: true, port: 3000 };
 
 const config: Configuration = {
   mode: 'development',
@@ -9,6 +12,7 @@ const config: Configuration = {
     path: path.resolve(__dirname, 'build'),
     filename: 'bundle.js'
   },
+  devServer,
   module: {
     rules: [
       {
@@ -17,7 +21,9 @@ const config: Configuration = {
         resolve: {
           extensions: ['.tsx', '.ts', '.js', '.json']
         },
-        use: 'ts-loader'
+        use: [
+          { loader: 'ts-loader', options: { onlyCompileBundledFiles: true } }
+        ]
       },
       {
         test: /\.scss$/i,
